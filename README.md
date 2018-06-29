@@ -1,5 +1,6 @@
 # Learning of High Dengue Incidence with Clustering and FP-Growth Algorithm using WHO Historical Data
 [![DOI](https://zenodo.org/badge/138871394.svg)](https://zenodo.org/badge/latestdoi/138871394)
+<br />
 *This is an accepted paper at the 3rd IEEE International Conference on Agents (ICA 2018)*
 ## Abstract
 This paper applies FP-Growth algorithm in mining fuzzy association rules for a prediction system of dengue. The system mines its rules through input of historic predictor variables for dengue. The rules will be used to build a rule-based classifier to predict the dengue incidence for the next month for the years 2001-2006 in the Philippines. The FP-Growth Algorithm was compared to Apriori Algorithm by Sensitivity, Specificity, PPV, NPV, execution time and memory usage. The results showed that FP-Growth Algorithm is significantly better in execution time, numerically better in memory and comparable in Sensitivity, Specificity PPV and NPV to Apriori Algorithm.
