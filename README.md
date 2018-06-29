@@ -60,5 +60,5 @@ Right click database ThesisSampleDB
 * **Cecil Jose Delfinado (Advisor)**
 
 ## License
-This research is license under MIT License - [LICENSE.MD](LICENSE.MD)
+This research is license under MIT License - [LICENSE.MD](https://github.com/rjtmahinay/learning-of-high-dengue-incidence/blob/master/LICENSE)
 
