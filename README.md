@@ -1,5 +1,5 @@
 # Learning of High Dengue Incidence with Clustering and FP-Growth Algorithm using WHO Historical Data
-[![DOI](https://zenodo.org/badge/138871394.svg)](https://zenodo.org/badge/latestdoi/138871394)
+
 <br />
 *This is an accepted paper at the 3rd IEEE International Conference on Agents (ICA 2018)*
 ## Abstract
