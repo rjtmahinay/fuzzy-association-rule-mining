@@ -12,7 +12,7 @@ The following default values were used in this research based on the data:
 Support: 0.014 <br />
 Confidence: 0.9
 
-#### Apriori Algorithm
+### Apriori Algorithm
 Generate association rules
 ```
 rules = Apriori.generate_itemsets_rules(data, support, confidence, lift)
