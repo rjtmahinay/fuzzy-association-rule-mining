@@ -13,13 +13,14 @@ Support: 0.014 <br />
 Confidence: 0.9
 
 ### Apriori Algorithm
+
 Generate association rules
 ```
 rules = Apriori.generate_itemsets_rules(data, support, confidence, lift)
 ```
 Print association rules
 ```
-print_result(rules)
+Apriori.print_result(rules)
 ```
 
 ### FP-Growth Algorithm
@@ -29,7 +30,7 @@ rules = FPGrowth.generate_patterns_rules(data, support, confidence)
 ```
 Print association rules
 ```
-print_result(rules)
+FPGrowth.print_result(rules)
 ```
 
 ## Authors
