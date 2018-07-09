@@ -5,10 +5,6 @@ Edited by Reynaldo John Tristan Mahinay Jr.
 import csv
 import itertools
 
-
-# from memory_profiler import profile
-
-
 class FPNode(object):
 
     def __init__(self, value, count, parent):
@@ -224,11 +220,6 @@ def find_frequent_patterns(transactions, support_threshold):
     tree = FPTree(transactions, support_threshold, None, None)
     return tree.mine_patterns(support_threshold)
 
-
-fp = open('fp.log', 'w+')
-
-
-# @profile(stream=fp)
 def generate_association_rules(patterns, confidence_threshold):
     # Assocation Rules with the given threshhold/confidence
 
@@ -251,13 +242,29 @@ def generate_association_rules(patterns, confidence_threshold):
     return rules
 
 
+def generate_patterns_rules(data, support, confidence):
+    transactions = open_data(data)
+
+    # Generate Frequent Itemset and Association Rules
+    pattern = find_frequent_patterns(transactions, support)
+
+    rules = generate_association_rules(pattern, confidence)
+
+    return rules
+
+
+def print_result(rules):
+    print('--Rules--')
+    for rule, confidence in sorted(rules.items(), key=lambda iterator: iterator[0]):
+        print('RULES: {}: {}'.format(tuple(rule), confidence))
+
 # OPENING THE DATA
-def open_data(filename):
-    f = open(filename, 'rU')
-    for l in f:
-        l = l.strip().rstrip(',')
-        row = frozenset(l.split(','))
-        yield row
+def open_data(file):
+    transactions = []
+
+    with open(file, 'r') as database:
+        for row in csv.reader(database):
+            transactions.append(row)
 
 
 def mine(file):
@@ -267,14 +274,6 @@ def mine(file):
 
     with open(file, 'r') as database:
         for row in csv.reader(database):
-            # row = row.strip().rstrip(',')
-            # result = frozenset(row.split(','))
-            # if options.numeric:
-            #     transaction = []
-            #     for item in row:
-            #         transaction.append(item)
-            #     transactions.append(transaction)
-            # else:
             transactions.append(row)
 
     # Frequent Itemset and Association Rules
@@ -282,10 +281,6 @@ def mine(file):
 
     rules = generate_association_rules(pattern, mincon)
 
-    # print('--Frequent Itemset--')
-    # for item, support in sorted(pattern.items(), key=lambda item_support: item_support[0]):
-    # print('ITEMS: {} : '.format(tuple(item)), end='')
-    # print('{}'.format(support))
     newrules = []
     nrules = []
     confi = []

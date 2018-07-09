@@ -6,7 +6,7 @@ Edited by Reynaldo John Tristan Mahinay Jr.
 from itertools import chain, combinations
 
 
-# OPENING THE DATA
+# Open the data in .csv file format
 def open_data(filename):
     f = open(filename, 'rU')
     for l in f:
@@ -32,10 +32,11 @@ def itemset_support(transaction_list, itemset, min_support=0):
         (item, float(sum(1 for row in transaction_list if item.issubset(row))) / len_transaction_list)
         for item in itemset
     ]
+
     return dict([(item, support) for item, support in l if support >= min_support])
 
 
-def freq_itemset(transaction_list, c_itemset, min_support):
+def frequent_itemset(transaction_list, c_itemset, min_support):
     f_itemset = dict()
 
     k = 1
@@ -51,22 +52,6 @@ def freq_itemset(transaction_list, c_itemset, min_support):
     return f_itemset
 
 
-def getRules(f_itemset, min_confidence):
-    rules = list()
-    for item, support in f_itemset.items():
-        if len(item) > 1:
-            for A in subsets(item):
-                B = item.difference(A)
-                if B:
-                    A = frozenset(A)
-                    AB = A | B
-                    confidence = float(f_itemset[AB]) / f_itemset[A]
-                    lift = float(f_itemset[AB]) / (f_itemset[A] * f_itemset[B])
-                    if confidence >= min_confidence:
-                        rules.append((A, B, confidence, lift))
-    return rules, f_itemset
-
-
 def joinset(itemset, k):
     return set([i.union(j) for i in itemset for j in itemset if len(i.union(j)) == k])
 
@@ -75,44 +60,67 @@ def subsets(itemset):
     return chain(*[combinations(itemset, i + 1) for i, a in enumerate(itemset)])
 
 
+# Generate Association Rules
+def get_rules(f_itemset, min_confidence, min_lift):
+    rules = list()
+    for item, support in f_itemset.items():
+        if len(item) > 1:
+            for antecedent in subsets(item):
+                consequent = item.difference(antecedent)
+                if consequent:
+                    antecedent = frozenset(antecedent)
+                    XY = antecedent.union(consequent)
+                    confidence = float(f_itemset[XY]) / f_itemset[antecedent]
+                    lift = confidence / (f_itemset[antecedent] * f_itemset[consequent])
+                    if confidence >= min_confidence:
+                        if lift >= min_lift:
+                            rules.append((antecedent, consequent, confidence, lift))
+    return rules
+
+
 # APRIORI ALGORITHM
-fp = open('apriori.log', 'w+')
+def generate_itemsets_rules(data, min_support, min_confidence, min_lift):
+    csv = open_data(data)
 
-
-# @profile(stream=fp)
-def apriori_algorithm(data, min_support, min_confidence):
     # Get first itemset and transactions
-    itemset, transaction_list = itemset_from_data(data)
+    itemset, transaction_list = itemset_from_data(csv)
 
     # Get the frequent itemset
-    f_itemset = freq_itemset(transaction_list, itemset, min_support)
+    f_itemset = frequent_itemset(transaction_list, itemset, min_support)
 
     # Association rules
-    return getRules(f_itemset, min_confidence)
+    rules = get_rules(f_itemset, min_confidence, min_lift)
+    return rules
 
 
 # Print the frequent itemset and association rules
-def print_result(rules: object, f_itemset: object) -> object:
+def print_result(rules):
+    print('--Rules--')
+    for antecedent, consequent, confidence, lift in sorted(rules, key=lambda iterator: iterator[0]):
+        print('RULES: {} => {} : {} : {}'.format(tuple(antecedent), tuple(consequent), round(confidence, 5),
+                                                 round(lift, 3)))
+
+
+# Store result to database
+def store_result(rules, frequent_itemset):
     rulesnew = []
 
     ant = []
     cons = []
     conf = []
-    liftt = []
-    for A, B, confidence, lift in sorted(rules, key=lambda A_B_confidence: A_B_confidence[0]):
-        ant.append(tuple(A))
-        cons.append(tuple(B))
+    lift = []
+    for antecedent, consequent, confidence, lift in sorted(rules, key=lambda iterator: iterator[0]):
+        ant.append(tuple(antecedent))
+        cons.append(tuple(consequent))
         conf.append(round(confidence, 4))
-        liftt.append(round(lift, 3))
-    return ant, cons, conf, liftt
+        lift.append(round(lift, 3))
+    return ant, cons, conf, lift
 
 
-def mine(csv):
-    # Default Values
-    default_support = 0.014
-    default_confidence = 0.9
+def mine(csv, default_support=0.014, default_confidence=0.9, default_lift=1):
 
     data = open_data(csv)
 
-    rules, itemset = apriori_algorithm(data, default_support, default_confidence)
-    return print_result(rules, itemset)
+    rules, itemset = generate_itemsets_rules(data, default_support, default_confidence, default_lift)
+
+    return store_result(rules, itemset)

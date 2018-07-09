@@ -38,7 +38,7 @@ def get_rules():
     return apriori_rules, fp_rules
 
 
-# Eto ung Rule Based Classifier
+# Rule-base Classifier
 def find_match(test_data, rules):
     answers = []
     listdata = test_data[test_data.columns[:-1]].values.tolist()
@@ -52,11 +52,6 @@ def find_match(test_data, rules):
                 antecedents = ant
 
             ans = set(antecedents) < set(list(data))
-            # print("antece")
-            # print(antecedents)
-            # print("Data")
-            # print(data)
-            # print("------------")
 
             if (ans == True):
 
@@ -69,8 +64,6 @@ def find_match(test_data, rules):
     print(temp)
     return answers
 
-
-# Baguhin mo na lng to
 def check_accuracy(test_data_dengue, rule_based_answers):
     total = len(test_data_dengue)  # might need checking
 
@@ -93,16 +86,13 @@ def check_accuracy(test_data_dengue, rule_based_answers):
             # print("True Negative: " + str(tn))
         elif (str(x) == 'DENGUE NEXT_HIGH' and str(y) == 'DENGUE NEXT_LOW'):
             fn += 1
-            # print("False Negative: " + str(fn))
 
         testRows += 1
 
-    # return (float(correct/total) * 100)
     if (tp == 0):
         PPV = 0
     else:
         PPV = float(tp / (tp + fp))
-    sensitivity = float(tp / (tp + fn))
     print("PPV:" + str(PPV * 100))
     print("NPV:" + str(float(tn / (tn + fn) * 100)))
     print("Sensitivity:" + str(float(tp / (tp + fn) * 100)))
@@ -110,7 +100,6 @@ def check_accuracy(test_data_dengue, rule_based_answers):
     if (PPV == 0):
         print("F: 0")
     else:
-        # print("F:" + str(float((1 + (0.639 ** 2)) * ((PPV * sensitivity)/ ((0.639**2) *PPV + sensitivity)) * 100)))
         print("F1:" + str(float((2 * tp) / (2 * tp + fp + fn) * 100)))
     print(str(float((tp + tn) / (total) * 100)))
     print("TP:" + str(tp) + " FP: " + str(fp) + " TN: " + str(tn) + " FN: " + str(fn))
@@ -126,16 +115,6 @@ def classfiy(test_data):
     start_time = time.time()
     prediction_fp = find_match(test_data, fp_rules)
     print("FP classify: --- %s seconds ---" % (time.time() - start_time))
-
-    # print(prediction_apriori)
-    # print("---------------")
-    # print(prediction_fp)
-    # print(test_data['dengue_next'])
-
-    # print(test_data[:-1])
-    # print("APRIORI: " + str(check_accuracy(test_data['dengue_next'],prediction_apriori)))
-
-    # print("FP: " + str(check_accuracy(test_data['dengue_next'], prediction_fp)))
 
     print('---------------------------------------------------')
     print('Apriori')

@@ -35,14 +35,12 @@ def connect_db(method):
 
     return ppsd_data
 
-
 '''
 Database Columns:
 City	WeekNo	Rainfall	Temperature	Humidity	NDVI_NE	NDVI_NW	NDVI_SE	NDVI_SW	SSTA	SOI	CityPopulation	Dengue
         City	WeekNo	Rainfall	Temperature	Humidity	NDVI_NE	NDVI_NW	NDVI_SE	NDVI_SW	SSTA	SOI	CityPopulation	Dengue
 
 '''
-
 
 def table_csv(data):
     # print(data)
