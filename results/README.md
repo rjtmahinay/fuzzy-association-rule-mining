@@ -1,6 +1,8 @@
 # Results
 
-![](https://github.com/rjtmahinay/learning-of-high-dengue-incidence/blob/master/results/exec_memory.jpg)
+<p align="center">
+<img src="https://github.com/rjtmahinay/learning-of-high-dengue-incidence/blob/master/results/exec_memory.jpg">
+</p>
 
 **<p align="center">Fig 1. Execution Time and Memory Usage</p>**
 
